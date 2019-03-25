@@ -85,12 +85,81 @@ Il vaut mieux supprimer un slave et le remplacer que de faire de la maintenance
 Kube = Event driven
 * Réaction suite à cet évènement.
 
+## Déclaratif vs Impératif (vs Fonctionnel)
 
+kubectl create
+* create => creation yml => appel API server
 
+### Déclaratif
 
+* Gitlab CI 
+* Ansible <-> ServerSpace
+* JenkinsFile
+* Docker-Compose
+* Behaviour Driven Development (BDD)
 
+Ingress = exposer vers l'extérieur des services
 
+## First Contact with _kubectl_
 
+_kubeadm_ a créé l'intégralité du cluster avec une API, un TLS certificates etc...
+
+`kubectl get all --all-namespaces --export -o yaml > backup-k8s.yaml` save the config
+
+`kubectl get nodes -o json | jq ".items[] | {name:.metadata.name} + .status.capacity"`
+
+```json
+{
+  "name": "node1",
+  "cpu": "4",
+  "ephemeral-storage": "47830060Ki",
+  "hugepages-2Mi": "0",
+  "memory": "4044596Ki",
+  "pods": "110"
+}
+{
+  "name": "node2",
+  "cpu": "4",
+  "ephemeral-storage": "47830060Ki",
+  "hugepages-2Mi": "0",
+  "memory": "4044596Ki",
+  "pods": "110"
+}
+{
+  "name": "node3",
+  "cpu": "4",
+  "ephemeral-storage": "47830060Ki",
+  "hugepages-2Mi": "0",
+  "memory": "4044596Ki",
+  "pods": "110"
+}
+```
+
+F5 a racheté Nginx (hardware a racheté le software)
+
+`kubectl get ns`
+
+`kubectl -n kube-system get pods` avec `-n` = namespace
+
+```
+NAME                            READY   STATUS    RESTARTS   AGE
+coredns-86c58d9df4-gs2gm        1/1     Running   0          13h
+coredns-86c58d9df4-j65xn        1/1     Running   0          13h
+etcd-node1                      1/1     Running   0          13h
+kube-apiserver-node1            1/1     Running   0          13h
+kube-controller-manager-node1   1/1     Running   0          13h
+kube-proxy-2jr7w                1/1     Running   0          13h
+kube-proxy-5trtl                1/1     Running   0          13h
+kube-proxy-ljqk2                1/1     Running   0          13h
+kube-scheduler-node1            1/1     Running   0          13h
+weave-net-b7ng8                 2/2     Running   0          13h
+weave-net-p8xzq                 2/2     Running   0          13h
+weave-net-q2fpr                 2/2     Running   1          13h
+```
+
+`-node1` = lancé seulement sur cette node
+
+`coredns` default port = 53, ne pas être trop restrictif
 
 
 
