@@ -50,5 +50,48 @@ Worst open source license
 
 Tant qu'un container ne fait rien, il ne consomme rien.
 
-_docker-compose up -d_ = detach the logs
+__docker-compose up -d__ = detach the logs
+
+__docker-compose down__ 
+
+docker-compose régit dans le dossier ou il se trouve.
+
+best practice image docker version
+
+* [semser.org](semver.org) 
+  * v1.3.x
+  * git hash, build #
+  * date (2019-03-25)
+
+Flannel / Cilium / Calico => gestion du réseau dans Kube
+
+## Concepts
+
+pet vs cattle
+
+* pet = monolithe, difficile à scale
+* cattle = 5000 tête => easy to replace/scale
+
+Il vaut mieux supprimer un slave et le remplacer que de faire de la maintenance
+
+
+
+* FaaS = Function as a Service =/= Serverless (offre cloud)
+* PaaS 
+* KaaS
+* CaaS = Cloud
+* IaaS
+
+Kube = Event driven
+* Réaction suite à cet évènement.
+
+
+
+
+
+
+
+
+
+
 
