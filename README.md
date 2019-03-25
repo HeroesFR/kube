@@ -159,7 +159,49 @@ weave-net-q2fpr                 2/2     Running   1          13h
 
 `-node1` = lancé seulement sur cette node
 
-`coredns` default port = 53, ne pas être trop restrictif
+`coredns` default port = 53, ne pas être trop restrictif sur les ports, sinon plus de gestion du réseau
+
+## Setting up K8s
+
+`kubectl apply` = `curl ... | sh` (_careful_)
+
+`pssh` = parallel SSH (lancer une commande sur plusieurs hosts)
+
+
+__@Youtube__ : KelseyHighTower, AliceGoldFuss, JessieFrazelle
+
+## Running first containers on Kube
+
+_alpine_ distribution Linux super allégé
+
+`kubectl run pingpong --image alpine ping 1.1.1.1`
+
+* `nginx` inclus dans 
+  * `Pod` inclus dans 
+  * `ReplicaSet` inclus dans 
+  * `deploy` inclus dans
+  * `NameSpace`
+
+
+FeaturesFlags : La feature a été livré, mais elle ne peut être déployé qu'à mon activation
+
+Labeliser le code/environnement/frontend/network/scaling/pod/owner/astreinte(?)
+
+`kubectl logs -l run=pingpong env=qual --tail 1`
+
+
+prometheus in kube or outside ?
+* both !
+	* Grafana = outside
+	* logs = inside
+
+
+
+
+
+
+
+
 
 
 
