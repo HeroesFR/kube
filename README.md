@@ -422,6 +422,28 @@ update the image `kubectl set image deploy worker worker=$REGISTRY/worker:$TAG` 
 `kubectl rollout undo deploy worker` will rollback to version N-1
 
 `kubectl rollout status deploy worker` check the rollout status
+ 
+### How to deploy
+
+* Product Owner sign, promote and scan the image
+* Pushed in the registry of prod as a promotion
+* broadcast to Slack/Skype etc that a new version is ready do be deployed
+* -> __`/deploy JIRA:v1.4`__
+* ...
+* ...
+* __`OKAY: deployed on https://test.....`__ and we check that every metrics that matters the most are okay.
+
+---
+
+## Healthcheck
+
+Needed in prod image `Dockerfile`, `docker-compose-prod.yml`, Resource Deployments K8s
+
+* `Dockerfile` => `HEALTHCHECK`
+* `docker-compose` => `healthcheck`
+* resource Deploy K8s => liveness / readiness
+  * liveness = pod dead or alive ?
+  * readiness = is he available to serve traffic
 
 
 
