@@ -299,5 +299,11 @@ Bastion =
 
 -> acces a TCP service `kubectl port-forward service/name_of_service local_port:remote_port`
 
+## Dashboard
+
+We need to 
+- create a _deployment_ and a _service_ for the dashboard
+- also a _secret_ a _service account_, a role and a _role binding_
+
 
 
