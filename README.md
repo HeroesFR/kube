@@ -445,5 +445,50 @@ Needed in prod image `Dockerfile`, `docker-compose-prod.yml`, Resource Deploymen
   * liveness = pod dead or alive ?
   * readiness = is he available to serve traffic
 
+if the charge overload, => __autoscaling__
+
+---
+
+## Accessing logs from the CLI
+
+`stern <POD>` better than `kubectl logs` (until 1.14)
+
+---
+
+## Centralized logging
+
+__ELK => EFK => Graylog 2 => Splunk (logz.io) => DataDog => Sematex__
+
+### Create namespace
+
+`kubectl create namespace efk`
+
+`kns` and `kns efk`
+
+A container writes a line on `stderr` or `stdout`
+
+---
+
+## Managing stacks with `Helm`
+
+Templating 
+
+`ClusterRoleBinding` = bind un _ClusterRole_ à un _serviceAccount_ 
+
+```
+kubectl create clusterrolebinding add-on-cluster-admin \
+  --clusterrole=cluster-admin --serviceaccount=kube-system:default
+```
+
+`helm search` search on github charts
+
+`helm search prometheus`
+
+```
+helm install stable/prometheus \
+     --set server.service.type=NodePort \
+     --set server.persistentVolume.enabled=false
+
+```
 
 
