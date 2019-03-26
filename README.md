@@ -218,6 +218,44 @@ kubectl expose deployment rng --port 80
 kubectl expose deployment hasher --port 80
 kubectl expose deploy/webui --type=NodePort --port=80
 ```
+:info: how to check if everything is okay ? 
+* `kubectl get all` and check if everything is up and running
+* go to the web browser `http://51.15.35.49:30913/index.html` and check if the page is showing
+
+```
+$ kubectl get all
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/hasher-684c9fbdc7-567r4     1/1     Running   0          6m23s
+pod/redis-6f9b48bb97-cdjb4      1/1     Running   0          7m
+pod/registry-654cc89557-w75pr   1/1     Running   0          15m
+pod/rng-d9548c789-bb74m         1/1     Running   0          6m23s
+pod/webui-54879f744-ctbr7       1/1     Running   0          6m22s
+pod/worker-686cc5944b-k25gm     1/1     Running   0          6m22s
+
+NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/hasher       ClusterIP   10.96.18.23     <none>        80/TCP           4m56s
+service/kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP          49m
+service/redis        ClusterIP   10.100.171.87   <none>        6379/TCP         5m4s
+service/registry     NodePort    10.96.74.239    <none>        5000:30318/TCP   15m
+service/rng          ClusterIP   10.97.198.52    <none>        80/TCP           5m1s
+service/webui        NodePort    10.98.92.214    <none>        80:30913/TCP     4m45s
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/hasher     1/1     1            1           6m23s
+deployment.apps/redis      1/1     1            1           7m
+deployment.apps/registry   1/1     1            1           15m
+deployment.apps/rng        1/1     1            1           6m23s
+deployment.apps/webui      1/1     1            1           6m22s
+deployment.apps/worker     1/1     1            1           6m22s
+
+NAME                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/hasher-684c9fbdc7     1         1         1       6m23s
+replicaset.apps/redis-6f9b48bb97      1         1         1       7m
+replicaset.apps/registry-654cc89557   1         1         1       15m
+replicaset.apps/rng-d9548c789         1         1         1       6m23s
+replicaset.apps/webui-54879f744       1         1         1       6m22s
+replicaset.apps/worker-686cc5944b     1         1         1       6m22s
+```
 
 node1:51.15.35.49
 node2:51.15.60.92
