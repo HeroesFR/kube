@@ -195,12 +195,41 @@ prometheus in kube or outside ?
 	* Grafana = outside
 	* logs = inside
 
+## Deploy self hosted registry 
 
+```bash
+kubectl run registry --image=registry
+kubectl expose deploy/registry --port=5000 --type=NodePort
+NODEPORT=$(kubectl get svc/registry -o json | jq .spec.ports[0].nodePort)
+REGISTRY=127.0.0.1:$NODEPORT
+cd ~/container.training/stacks
+export REGISTRY
+export TAG=v0.1
+docker-compose -f dockercoins.yml build
+docker-compose -f dockercoins.yml push
+kubectl run redis --image=redis
 
+for SERVICE in hasher rng webui worker; do
+  kubectl run $SERVICE --image=$REGISTRY/$SERVICE:$TAG
+done
 
+kubectl expose deployment redis --port 6379
+kubectl expose deployment rng --port 80
+kubectl expose deployment hasher --port 80
+kubectl expose deploy/webui --type=NodePort --port=80
+```
 
+node1:51.15.35.49
+node2:51.15.60.92
+node3:51.15.96.171
 
+## Controlling the cluster remotely
 
+Bastion = 
+* serveur d'exploitation qui lance des commandes sur le cluster en remote
+* avoir la liste des accès pour les clusters
+
+## Accessing internal Services
 
 
 
