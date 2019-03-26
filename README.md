@@ -303,7 +303,31 @@ Bastion =
 
 We need to 
 - create a _deployment_ and a _service_ for the dashboard
-- also a _secret_ a _service account_, a role and a _role binding_
+- also a _secret_ a _service account_, a _role_ and a _role binding_
 
+```
+[51.15.35.49] (kubernetes-admin@kubernetes:default) docker@node1 ~
+$ kubectl get namespaces 
+NAME              STATUS   AGE
+default           Active   106m
+kube-node-lease   Active   106m
+kube-public       Active   106m
+kube-system       Active   106m
+[51.15.35.49] (kubernetes-admin@kubernetes:default) docker@node1 ~
+$ kubectl get svc
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+hasher       ClusterIP   10.96.18.23     <none>        80/TCP           61m
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP          106m
+redis        ClusterIP   10.100.171.87   <none>        6379/TCP         61m
+registry     NodePort    10.96.74.239    <none>        5000:30318/TCP   71m
+rng          ClusterIP   10.97.198.52    <none>        80/TCP           61m
+webui        NodePort    10.98.92.214    <none>        80:30913/TCP     61m
+[51.15.35.49] (kubernetes-admin@kubernetes:default) docker@node1 ~
+$ kubectl -n kube-system get svc
+NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                  AGE
+kube-dns               ClusterIP   10.96.0.10      <none>        53/UDP,53/TCP,9153/TCP   106m
+kubernetes-dashboard   NodePort    10.97.16.46     <none>        443:31032/TCP            13m
+socat                  NodePort    10.106.127.67   <none>        80:30962/TCP             13m
 
+```
 
