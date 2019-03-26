@@ -1,5 +1,7 @@
 # KUBE
 
+[>>Container Training<<](https://github.com/jpetazzo/container.training)
+
 Containers = POD
 
 PORTUS = registry like Nexus
@@ -214,7 +216,7 @@ prometheus in kube or outside ?
 
 ```bash
 kubectl run registry --image=registry
-kubectl expose deploy/registry --port=5000 --type=NodePort # Expose the port in every node
+kubectl expose deploy/registry --port=5000 --type=NodePort # NodePort expose the port in every node
 
 NODEPORT=$(kubectl get svc/registry -o json | jq .spec.ports[0].nodePort)
 REGISTRY=127.0.0.1:$NODEPORT
