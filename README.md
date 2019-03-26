@@ -181,7 +181,7 @@ weave-net-q2fpr                 2/2     Running   1          13h
 `pssh` = parallel SSH (lancer une commande sur plusieurs hosts)
 
 
-__@Youtube__ : KelseyHighTower, AliceGoldFuss, JessieFrazelle
+__@Youtube__ : KelseyHighTower, AliceGoldFuss, JessieFrazelle, JoeBeda
 
 ---
 
@@ -299,11 +299,15 @@ Bastion =
 
 -> acces a TCP service `kubectl port-forward service/name_of_service local_port:remote_port`
 
+---
+
 ## Dashboard
 
 We need to 
 - create a _deployment_ and a _service_ for the dashboard
 - also a _secret_ a _service account_, a _role_ and a _role binding_
+
+[Securising kube](https://blog.heptio.com/on-securing-the-kubernetes-dashboard-16b09b1b7aca)
 
 ```
 [51.15.35.49] (kubernetes-admin@kubernetes:default) docker@node1 ~
@@ -330,4 +334,75 @@ kubernetes-dashboard   NodePort    10.97.16.46     <none>        443:31032/TCP  
 socat                  NodePort    10.106.127.67   <none>        80:30962/TCP             13m
 
 ```
+---
+
+## __Kubectl apply__ 
+
+careful with this command because we apply a yml file to our cluster
+
+---
+
+## Scale a deployment
+
+`kubectl scale deploy/worker --replicas=10`
+
+if we scale the replicaset, the deploy will
+
+Scale ? When 
+
+HPA (Horizontal Pod AutoScaler) 
+
+Scale if %CPU > X% ,
+
+min = 2 
+max = 2-3 fois le nombre de pods ?
+
+
+
+--- 
+
+## Daemon Sets
+
+__Deployer un exemplaire d'un pod sur chaque node !__
+
+Contrairement à deploy, qui peut en lancer 10 n'importe ou.
+
+They can also be restricted to run only on some nodes : 
+
+Likewise if you specify a .spec.template.spec.affinity, then DaemonSet controller will create Pods on nodes which match that node affinity.
+
+affinity = label
+
+taints =
+
+(tolerations = ouvrir et assouplir)
+
+__traiter les logs en tant que flux__, afin de décentraliser l'information [TOREAD](12factor.net)
+
+If we delete pod, the replicaset will recreate it and will double it
+
+--- 
+
+## Updating a service through labels ans selectors
+
+Difference between :
+
+* the label of a resource in the __`metadata`__ block
+  * decription
+* the selector of a resource in the __`spec`__ block
+  * 
+* the label of the resource created by the first resource (in the __`template`__ block)
+  * 
+
+
+
+
+
+
+
+
+
+
+
+
 
