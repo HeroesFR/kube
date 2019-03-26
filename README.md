@@ -16,6 +16,8 @@ Persistance des données : dejà bien outillé avec oracle, mysql etc.
 
 Utilisation de *MOSH* = ssh via UDP (utile pour les connexions pas stable)
 
+---
+
 ## Première app
 
 Facilitation de l'unboarding sur n'importe quel environnement. Utilisation de _git clone_ et _docker-compose up_ 
@@ -65,6 +67,8 @@ best practice image docker version
 
 Flannel / Cilium / Calico => gestion du réseau dans Kube
 
+---
+
 ## Concepts
 
 pet vs cattle
@@ -85,10 +89,13 @@ Il vaut mieux supprimer un slave et le remplacer que de faire de la maintenance
 Kube = Event driven
 * Réaction suite à cet évènement.
 
+---
+
 ## Déclaratif vs Impératif (vs Fonctionnel)
 
 kubectl create
 * create => creation yml => appel API server
+
 
 ### Déclaratif
 
@@ -99,6 +106,8 @@ kubectl create
 * Behaviour Driven Development (BDD)
 
 Ingress = exposer vers l'extérieur des services
+
+--- 
 
 ## First Contact with _kubectl_
 
@@ -161,6 +170,8 @@ weave-net-q2fpr                 2/2     Running   1          13h
 
 `coredns` default port = 53, ne pas être trop restrictif sur les ports, sinon plus de gestion du réseau
 
+---
+
 ## Setting up K8s
 
 `kubectl apply` = `curl ... | sh` (_careful_)
@@ -169,6 +180,8 @@ weave-net-q2fpr                 2/2     Running   1          13h
 
 
 __@Youtube__ : KelseyHighTower, AliceGoldFuss, JessieFrazelle
+
+---
 
 ## Running first containers on Kube
 
@@ -195,28 +208,37 @@ prometheus in kube or outside ?
 	* Grafana = outside
 	* logs = inside
 
+---
+
 ## Deploy self hosted registry 
 
 ```bash
 kubectl run registry --image=registry
-kubectl expose deploy/registry --port=5000 --type=NodePort
+kubectl expose deploy/registry --port=5000 --type=NodePort # Expose the port in every node
+
 NODEPORT=$(kubectl get svc/registry -o json | jq .spec.ports[0].nodePort)
 REGISTRY=127.0.0.1:$NODEPORT
+
 cd ~/container.training/stacks
 export REGISTRY
 export TAG=v0.1
 docker-compose -f dockercoins.yml build
 docker-compose -f dockercoins.yml push
+
+
 kubectl run redis --image=redis
 
 for SERVICE in hasher rng webui worker; do
   kubectl run $SERVICE --image=$REGISTRY/$SERVICE:$TAG
 done
 
+# Expose ports of every services
+# By default, the type is ClusterIP
 kubectl expose deployment redis --port 6379
 kubectl expose deployment rng --port 80
 kubectl expose deployment hasher --port 80
 kubectl expose deploy/webui --type=NodePort --port=80
+
 ```
 :info: how to check if everything is okay ? 
 * `kubectl get all` and check if everything is up and running
@@ -257,9 +279,11 @@ replicaset.apps/webui-54879f744       1         1         1       6m22s
 replicaset.apps/worker-686cc5944b     1         1         1       6m22s
 ```
 
-node1:51.15.35.49
-node2:51.15.60.92
-node3:51.15.96.171
+* node1:51.15.35.49
+* node2:51.15.60.92
+* node3:51.15.96.171
+
+---
 
 ## Controlling the cluster remotely
 
@@ -267,9 +291,11 @@ Bastion =
 * serveur d'exploitation qui lance des commandes sur le cluster en remote
 * avoir la liste des accès pour les clusters
 
+--- 
+
 ## Accessing internal Services
 
-
+-> acces a TCP service `kubectl port-forward service/name_of_service local_port:remote_port`
 
 
 
