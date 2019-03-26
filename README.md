@@ -2,6 +2,11 @@
 
 [>>Container Training<<](https://github.com/jpetazzo/container.training)
 
+[Website](https://qconuk2019.container.training/)
+
+[Github Awesome + techno](https://github.com/ramitsurana/awesome-kubernetes)
+
+
 Containers = POD
 
 PORTUS = registry like Nexus
@@ -214,6 +219,9 @@ prometheus in kube or outside ?
 
 ## Deploy self hosted registry 
 
+
+
+
 ```bash
 kubectl run registry --image=registry
 kubectl expose deploy/registry --port=5000 --type=NodePort # NodePort expose the port in every node
@@ -395,14 +403,25 @@ Difference between :
   * 
 
 
+How to get logs from containers
+* /var/lib/docker/containerHash/hash-json.log
 
+How to avoid extra pods :
 
+`kubectl patch`
 
+---
 
+## Rolling updates 
 
+* update = rollout the pod and update it
+* change spec = create new pod and leave the old pods
 
+update the image `kubectl set image deploy worker worker=$REGISTRY/worker:$TAG` or use `kubectl edit deploy worker` and change the image name
 
+`kubectl rollout undo deploy worker` will rollback to version N-1
 
+`kubectl rollout status deploy worker` check the rollout status
 
 
 
