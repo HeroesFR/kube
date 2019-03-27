@@ -491,4 +491,21 @@ helm install stable/prometheus \
 
 ```
 
+---
 
+## Namespaces
+
+* `default` = apps
+* `kube-system` = control plane
+* `kube-public` = contains one secret used for cluster discovery
+
+How to use command in specific context : `kubectl -n blue get svc`
+
+__DO NOT provide isolation__
+
+_Network policies_ does isolation !
+
+A context is a tuple of 
+* user
+* cluster
+* namespace
