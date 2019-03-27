@@ -673,6 +673,40 @@ Monitoring : Grafana => Dashboard => Plugin (k8s, jenkins, swarm, mysql..)
 
 ---
 
+## Dockerfile
+
+Checklist images
+
+[ ] No password
+[ ] one process per container (unless forks)
+[ ] Dockerfile + .dockerignore
+
+
+Image = 
+* conf
+* code
+* tomcat
+* JRE
+* tooling DSI
+* centos
+
+code <-> centos (dev = qual = prod)
+
+COW = Copy on Write
+
+
+### `.dockerignore`
+```
+.git/
+/tests
+/docs
+/log
+/tmp
+```
+
+
+---
+
 ## Volumes
 
 `restartPolicy: OnFailure`
@@ -706,4 +740,5 @@ _Never_ store sensitive information in container images
 # Link & sources
 
 Hashicorp ~ Zookeeper
+ORSYS tatuu2ur eval.orsys.fr
 
