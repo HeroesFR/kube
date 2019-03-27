@@ -677,9 +677,9 @@ Monitoring : Grafana => Dashboard => Plugin (k8s, jenkins, swarm, mysql..)
 
 Checklist images
 
-[ ] No password
-[ ] one process per container (unless forks)
-[ ] Dockerfile + .dockerignore
+- [ ] No password
+- [ ] one process per container (unless forks)
+- [ ] Dockerfile + .dockerignore
 
 
 Image = 
