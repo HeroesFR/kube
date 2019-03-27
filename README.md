@@ -758,6 +758,33 @@ Portworx = Gros dique dur de donnée qui est aggrégé depuis plusieurs machines
 
 ---
 
+## Manage Configuration
+
+Injecting configuration file
+
+__`configmaps`__
+
+`kubectl create configmap my-app-config --from-file=app.config`
+```
+kubectl create cm my-app-config \
+  --from-literal=foreground=red \
+  --from-literal=background=blue
+```
+
+---
+
+## Owners and dependents
+
+List all pods that got no owners
+```
+kubectl get pod -o json | jq -r "
+      .items[]
+      | select(.metadata.ownerReferences|not)
+      | .metadata.name"
+```
+
+---
+
 ## Kubernetes en production
 
 Specify a CPU request and a CPU limit in the pod (CPU/RAM)
