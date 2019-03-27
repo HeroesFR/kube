@@ -677,9 +677,19 @@ Monitoring : Grafana => Dashboard => Plugin (k8s, jenkins, swarm, mysql..)
 
 Checklist images
 
-- [ ] No password
-- [ ] one process per container (unless forks)
-- [ ] Dockerfile + .dockerignore
+- [x] No password
+- [x] One process per container (unless forks)
+- [x] Dockerfile + .dockerignore
+- [x] JSON syntax
+- [x] `ENTRYPOINT` : default command
+- [x] `CMD` : default parameters of default command
+- [x] __the most stable on the top__
+- [x] __the most changing on the bottom__
+- [x] >>Use Build MultiStage<<
+- [x] add dependency in the image before the code
+- [x] `ENV` in the beginning of the file
+- [x] `USER` != `ROOT`
+- [x] `EXPOSE` good for documentation (we can do it with docker-compose/kube etc.)
 
 
 Image = 
@@ -703,6 +713,33 @@ COW = Copy on Write
 /log
 /tmp
 ```
+
+### MultiStage
+
+```
+FROM ubuntu AS compiler
+RUN apt-get update
+RUN apt-get install -y build-essential
+COPY hello.c /
+RUN make hello
+FROM ubuntu
+COPY --from=compiler /hello /hello
+CMD /hello
+```
+
+```
+FROM ubuntu as builder
+...
+FROM ubuntu as builder
+...
+FROM alpine as test
+...
+FROM busybox as prod
+```
+
+`docker build --target=test` will stop at the end of the `FROM alpine as test`
+
+
 
 
 ---
