@@ -509,3 +509,44 @@ A context is a tuple of
 * user
 * cluster
 * namespace
+
+/!\ Pas de sécurité, pas de login/pwd lors du passage d'un contexte à un autre !!
+
+`kubectl foo` = `kubectl config set-context --current --namespace=foo`
+
+[`kube-ps1`](https://github.com/jonmosco/kube-ps1)
+[`kubectx`](https://github.com/ahmetb/kubectx)
+
+---
+
+## Network policies
+
+* [selector]
+  * list of labels
+
+-> applying ingress/egress rules to a selector
+
+Ingress = incoming traffic
+egress = outgoing traffic 
+
+> __pod A want to talk to pod B__
+* Policy in A with egress rule to talk to B
+* Policy in B with ingress rule to talk to A
+
+WAF = Web Application Firewall : Get network policies
+
+```yml Network policy
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-testcurl-for-testweb
+spec:
+  podSelector:
+    matchLabels:
+      run: testweb
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          run: testcurl
+```
