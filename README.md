@@ -535,7 +535,21 @@ egress = outgoing traffic
 
 WAF = Web Application Firewall : Get network policies
 
-```yml Network policy
+Deny Policy
+```yml
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: deny-all-for-testweb
+spec:
+  podSelector:
+    matchLabels:
+      run: testweb
+  ingress: []
+```
+
+Allow Policy
+```yml 
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
