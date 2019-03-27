@@ -381,9 +381,9 @@ Likewise if you specify a .spec.template.spec.affinity, then DaemonSet controlle
 
 affinity = label
 
-taints =
+`taints` = markage pour dire de ne pas lancer de pods sur cette node
 
-(tolerations = ouvrir et assouplir)
+`tolerations` = ouvrir et assouplir les _taints_ et ainsi déployer des pods même sur la node master
 
 __traiter les logs en tant que flux__, afin de décentraliser l'information [TOREAD](12factor.net)
 
@@ -564,3 +564,146 @@ spec:
         matchLabels:
           run: testcurl
 ```
+
+A good strategy is to isolate a namespace, so that:
+* all the pods in the namespace can communicate together
+* other namespaces cannot access the pods
+* external access has to be enabled explicitly
+
+---
+
+## Authentication and Authorization
+
+*Authentication* = verifying the identity of a person
+
+*Authorization* = listing what they are allowed to do
+
+__CA__ Certification Authority
+
+
+`RBAC` = Role-Based Access Control
+
+A rule is a combination of:
+* verbs like create, get, list, update, delete ...
+* resources (as in "API resource", like pods, nodes, services ...)
+* resource names (to specify e.g. one specific pod instead of all pods)
+* in some case, subresources (e.g. logs are subresources of pods)
+
+```
+kubectl create serviceaccount viewer
+
+kubectl create rolebinding viewercanview \
+      --clusterrole=view \
+      --serviceaccount=default:viewer
+
+
+```
+
+
+---
+
+## Exposing HTTP services with Ingress resources
+
+Traefik will use the labels to configure the cluster (à chaud)
+
+We will create Ingress rules that will _route_ the URL to our site
+
+> We need to replace the A.B.C.D with our `node1` IP address
+```yml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cheddar
+spec:
+  rules:
+  - host: cheddar.A.B.C.D.nip.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: cheddar
+          servicePort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: stilton
+spec:
+  rules:
+  - host: stilton.A.B.C.D.nip.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: stilton
+          servicePort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: wensleydale
+spec:
+  rules:
+  - host: wensleydale.A.B.C.D.nip.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: wensleydale
+          servicePort: 80
+```
+
+```
+kubectl run cheddar --image=errm/cheese:cheddar
+kubectl run stilton --image=errm/cheese:stilton
+kubectl run wensleydale --image=errm/cheese:wensleydale
+
+kubectl expose deployment cheddar --port=80
+kubectl expose deployment stilton --port=80
+kubectl expose deployment wensleydale --port=80
+```
+
+---
+
+## Git-based workflow 
+
+## Prometheus
+
+Monitoring : Grafana => Dashboard => Plugin (k8s, jenkins, swarm, mysql..)
+
+---
+
+## Volumes
+
+`restartPolicy: OnFailure`
+
+---
+
+## Stateful sets & Persistant Volume Claim
+
+If a pod die, the volume persist and can bee attached to it after all
+
+Portworx = Gros dique dur de donnée qui est aggrégé depuis plusieurs machines de plusieurs tailles différents
+
+---
+
+## Kubernetes en production
+
+Specify a CPU request and a CPU limit in the pod (CPU/RAM)
+
+Autoscaling (HPA)
+
+Namespace and quotas (RAM,CPU,disk)
+
+
+__@Youtube GCP upgrade kube cluster with zero down time__
+
+Stateful services = data persistence
+* _Outside_ of the cluster
+
+_Never_ store sensitive information in container images
+
+# Link & sources
+
+Hashicorp ~ Zookeeper
+
